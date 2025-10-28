@@ -279,10 +279,6 @@ export async function getConfig (opts: {
     if (typeof pnpmConfig.packageLock === 'boolean') return pnpmConfig.packageLock
     return false
   })()
-  pnpmConfig.useGitBranchLockfile = (() => {
-    if (typeof pnpmConfig.gitBranchLockfile === 'boolean') return pnpmConfig.gitBranchLockfile
-    return false
-  })()
   pnpmConfig.mergeGitBranchLockfiles = await (async () => {
     if (typeof pnpmConfig.mergeGitBranchLockfiles === 'boolean') return pnpmConfig.mergeGitBranchLockfiles
     if (pnpmConfig.mergeGitBranchLockfilesBranchPattern != null && pnpmConfig.mergeGitBranchLockfilesBranchPattern.length > 0) {
@@ -395,6 +391,11 @@ export async function getConfig (opts: {
       }
     }
   }
+
+  pnpmConfig.useGitBranchLockfile = (() => {
+    if (typeof pnpmConfig.gitBranchLockfile === 'boolean') return pnpmConfig.gitBranchLockfile
+    return false
+  })()
 
   overrideSupportedArchitecturesWithCLI(pnpmConfig, cliOptions)
 

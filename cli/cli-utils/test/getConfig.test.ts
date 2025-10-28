@@ -27,3 +27,24 @@ test('console a warning when the .npmrc has an env variable that does not exist'
   // eslint-disable-next-line no-template-curly-in-string
   expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('Failed to replace env in config: ${ENV_VAR_123}'))
 })
+
+test('should respect setting `gitBranchLockfile` defined in workspace file', async () => {
+  prepare()
+
+  fs.writeFileSync('pnpm-workspace.yaml', `
+packages:
+  - 'packages/*'
+
+gitBranchLockfile: true
+`, 'utf8')
+
+  const config = await getConfig({
+    json: false,
+  }, {
+    workspaceDir: '.',
+    excludeReporter: false,
+    rcOptionsTypes: {},
+  })
+
+  expect(config.useGitBranchLockfile).toBe(true)
+})
