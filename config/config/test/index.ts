@@ -1093,6 +1093,23 @@ test('settings shamefullyHoist in pnpm-workspace.yaml should take effect', async
   expect(config.rawConfig['shamefully-hoist']).toBe(true)
 })
 
+test('settings gitBranchLockfile in pnpm-workspace.yaml should take effect', async () => {
+  const workspaceDir = f.find('settings-in-workspace-yaml')
+  process.chdir(workspaceDir)
+  const { config } = await getConfig({
+    cliOptions: {},
+    workspaceDir,
+    packageManager: {
+      name: 'pnpm',
+      version: '1.0.0',
+    },
+  })
+
+  expect(config.gitBranchLockfile).toBe(true)
+  expect(config.useGitBranchLockfile).toBe(true)
+  expect(config.rawConfig['git-branch-lockfile']).toBe(true)
+})
+
 test('when dangerouslyAllowAllBuilds is set to true neverBuiltDependencies is set to an empty array', async () => {
   const { config } = await getConfig({
     cliOptions: {
